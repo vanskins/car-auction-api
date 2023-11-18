@@ -35,7 +35,7 @@ const AuctionSchema = new Schema({
 const Auction = models.Auction || model("Auction", AuctionSchema)
 
 // Get all auctions
-export const getAuctions = () => Auction.find();
+export const getAuctions = () => Auction.find()
 // Get auction by id
 export const getAuctionById = (_id: string) => Auction.findById(_id);
 // Get auctions by User id

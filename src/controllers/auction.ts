@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createNewAuction } from '../models/auctions'
+import { createNewAuction, getAuctions } from '../models/auctions'
 import { Schema } from 'mongoose';
 
 declare module 'express' {
@@ -29,7 +29,18 @@ export const createNewAuctionController = async (req: Request, res: Response) =>
 
     return res.status(200).json(auction).end();
   } catch (error) {
-    console.log(error, 'ERROR')
+    return res.sendStatus(400)
+  }
+}
+
+export const getAuctionsController = async (req: Request, res: Response) => {
+  try {
+    const auctions = await getAuctions().populate({ 
+      path: 'user',
+      select: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 }
+    })
+    return res.status(200).json(auctions);
+  } catch (error) {
     return res.sendStatus(400)
   }
 }
