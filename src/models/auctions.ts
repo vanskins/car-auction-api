@@ -10,9 +10,13 @@ const AuctionSchema = new Schema({
     type: String,
     required: [true, 'Brand name is required!']
   },
-  yearModel: {
+  year: {
     type: String,
     required: [true, 'Year model is required!']
+  },
+  model: {
+    type: String,
+    required: [true, 'Model is required!']
   },
   openingPrice: {
     type: Number,
