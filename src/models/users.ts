@@ -40,14 +40,14 @@ type UserTypes = {
 }
 
 // GET all users
-export const getUsers = () => User.find().lean();
+export const getUsers = () => User.find();
 // GET user by id
-export const getUserById = (_id: string) => User.findById(_id).lean();
+export const getUserById = (_id: string) => User.findById(_id);
 // GET user by email
 export const getUserBySessionToken = (sessionToken: string) => User.findOne({
   'authentication.sessionToken': sessionToken
-}).lean();
-export const getUserByEmail = (email: string) => User.findOne({ email }).lean();
+});
+export const getUserByEmail = (email: string) => User.findOne({ email });
 // Delete user by id
 export const deleteUserById = (_id: string) => User.findByIdAndDelete(_id);
 // Create new user
