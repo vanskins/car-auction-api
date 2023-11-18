@@ -31,14 +31,6 @@ const UserSchema = new Schema({
 
 const User = models.User || model("User", UserSchema)
 
-type UserTypes = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  roles: string[]
-}
-
 // GET all users
 export const getUsers = () => User.find();
 // GET user by id

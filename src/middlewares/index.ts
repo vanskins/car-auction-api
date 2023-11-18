@@ -11,7 +11,6 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
     }
 
     const checkExistingUser = await getUserBySessionToken(sessionToken)
-    console.log(checkExistingUser)
     if (!checkExistingUser) {
       return res.sendStatus(403)
     }
