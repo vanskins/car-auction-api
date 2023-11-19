@@ -18,10 +18,14 @@ const BidSchema = new Schema({
   }
 }, { timestamps: true });
 
-// BidSchema.pre('save', (this: BidDocument, next) => {
-//   console.log(this.auction, 'TEST')
-//   next();
-// })
+BidSchema.pre('validate', function(next) {
+  console.log('this gets printed first', this.auction);
+  next(new Error('This is error'));
+});
+
+BidSchema.pre('save', (next)  => {
+  next();
+})
 
 
 const Bid = models.Bid || model("Bid", BidSchema)
