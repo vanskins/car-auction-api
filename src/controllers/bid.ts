@@ -22,8 +22,8 @@ export const createBidController = async (req: Request, res: Response) => {
 
     return res.status(200).json(bid).end();
   } catch (error) {
-    console.log(error, 'Error')
-    res.sendStatus(400)
+    const errorObj = JSON.parse(error.message)
+    return res.status(400).json(errorObj).end();
   }
 }
 

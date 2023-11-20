@@ -48,4 +48,6 @@ export const getAuctionByUserId = (userId: string) => Auction.find({ user: userI
 export const deleteAuctionById = (_id: string) => Auction.findByIdAndDelete(_id);
 // Create new auction
 export const createNewAuction = (values: Record<string, any>) => new Auction(values).save().then((auction: any) => auction.toObject());
+// Update auction price increment
+export const updateAuctionById = (values: Record<string, any>, _id: string) => Auction.findByIdAndUpdate(_id, values);
 export default Auction;
