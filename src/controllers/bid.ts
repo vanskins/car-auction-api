@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createBid, getBids } from '../models/bids';
+import { createBid, getBids, getBidsByAuctionId } from '../models/bids';
 import { Schema, Types } from 'mongoose';
 
 declare module 'express' {
@@ -33,5 +33,18 @@ export const getBidsController = async (req: Request, res: Response) => {
     res.status(200).json(bids).end();
   } catch (error) {
     res.sendStatus(400)
+  }
+}
+
+export const getBidByAuctionIdController = async (req: Request, res: Response) => {
+  try {
+    const { auctionId } = req.params;
+    const auction = await getBidsByAuctionId(auctionId).populate({ 
+      path: 'user',
+      select: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 }
+    }).populate('auction').sort({ createdAt: -1 })
+    return res.status(200).json(auction);
+  } catch (error) {
+    return res.sendStatus(400)
   }
 }
