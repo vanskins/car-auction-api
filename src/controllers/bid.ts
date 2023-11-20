@@ -5,7 +5,8 @@ import { Schema, Types } from 'mongoose';
 declare module 'express' {
   interface Request {
     identity?: {
-      _id: typeof Schema.ObjectId
+      _id: typeof Schema.ObjectId;
+      roles: string[];
     };
   }
 }
@@ -30,6 +31,7 @@ export const createBidController = async (req: Request, res: Response) => {
 export const getBidsController = async (req: Request, res: Response) => {
   try {
     const bids = await getBids().sort({ createdAt: -1 });
+    console.log(bids, 'Bids')
     res.status(200).json(bids).end();
   } catch (error) {
     res.sendStatus(400)

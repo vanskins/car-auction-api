@@ -6,6 +6,7 @@ declare module 'express' {
   interface Request {
     identity?: {
       _id: typeof Schema.ObjectId;
+      roles: string[];
     };
   }
 }

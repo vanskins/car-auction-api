@@ -11,12 +11,13 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
     }
 
     const checkExistingUser = await getUserBySessionToken(sessionToken)
+    
     if (!checkExistingUser) {
       return res.sendStatus(403)
     }
 
-    merge(req, { identity: checkExistingUser})
-
+    merge(req, { identity: checkExistingUser })
+    
     return next();
   } catch (error) {
     return res.sendStatus(401);
