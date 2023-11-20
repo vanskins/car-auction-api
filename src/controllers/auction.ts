@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createNewAuction, getAuctions, getAuctionById } from '../models/auctions'
+import { createNewAuction, getAuctions, getAuctionById, getAuctionByUserId } from '../models/auctions'
 import { Schema } from 'mongoose';
 
 declare module 'express' {
@@ -38,7 +38,7 @@ export const getAuctionsController = async (req: Request, res: Response) => {
     const auctions = await getAuctions().populate({ 
       path: 'user',
       select: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 }
-    })
+    }).sort({ createdAt: -1 })
     return res.status(200).json(auctions);
   } catch (error) {
     return res.sendStatus(400)
@@ -53,6 +53,18 @@ export const getAuctionByIdController = async (req: Request, res: Response) => {
       select: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 }
     })
     return res.status(200).json(auction);
+  } catch (error) {
+    return res.sendStatus(400)
+  }
+}
+
+export const getAuctionByUserIdController = async (req: Request, res: Response) => {
+  try {
+    const auctions = await getAuctionByUserId(req.identity._id.toString()).populate({ 
+      path: 'user',
+      select: { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 }
+    }).sort({ createdAt: -1 })
+    return res.status(200).json(auctions);
   } catch (error) {
     return res.sendStatus(400)
   }
