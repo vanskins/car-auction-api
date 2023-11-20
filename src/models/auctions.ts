@@ -29,6 +29,10 @@ const AuctionSchema = new Schema({
   expiryDate: {
     type: String,
     required: [true, 'Expiry date required!']
+  },
+  open: {
+    type: Boolean,
+    default: true
   }
 }, { timestamps: true });
 

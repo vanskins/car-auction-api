@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { createBid } from '../models/bids';
-import { Schema } from 'mongoose';
+import { createBid, getBids } from '../models/bids';
+import { Schema, Types } from 'mongoose';
 
 declare module 'express' {
   interface Request {
@@ -16,13 +16,22 @@ export const createBidController = async (req: Request, res: Response) => {
 
     const bid = await createBid({
       user: req.identity._id,
-      auction,
+      auction: new Types.ObjectId(auction),
       bidPrice
     })
 
     return res.status(200).json(bid).end();
   } catch (error) {
     console.log(error, 'Error')
+    res.sendStatus(400)
+  }
+}
+
+export const getBidsController = async (req: Request, res: Response) => {
+  try {
+    const bids = await getBids().sort({ createdAt: -1 });
+    res.status(200).json(bids).end();
+  } catch (error) {
     res.sendStatus(400)
   }
 }

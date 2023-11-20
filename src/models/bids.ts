@@ -1,7 +1,13 @@
-import { Schema, model, models } from 'mongoose';
-import Auction from './auctions';
+import mongoose, { Schema, model, models } from 'mongoose';
+import { getAuctionById } from './auctions';
 
-const BidSchema = new Schema({
+interface IBidSchema {
+  user: typeof Schema.ObjectId;
+  auction: typeof Schema.ObjectId;
+  bidPrice: number;
+}
+
+const BidSchema = new Schema<IBidSchema>({
   user: {
     type: Schema.ObjectId,
     required: [true, 'User Id is required!'],
@@ -18,8 +24,14 @@ const BidSchema = new Schema({
   }
 }, { timestamps: true });
 
-BidSchema.pre('validate', function(next) {
-  console.log('this gets printed first', this.auction);
+BidSchema.pre('validate', async function(next) {
+  const auctionId = this.auction;
+  try {
+    const auction = await getAuctionById(auctionId.toString())
+    console.log(auction, 'Auction')
+  } catch (error) {
+    
+  }
   next(new Error('This is error'));
 });
 
@@ -28,8 +40,17 @@ BidSchema.pre('save', (next)  => {
 })
 
 
-const Bid = models.Bid || model("Bid", BidSchema)
+const Bid = models.Bid || model<IBidSchema>("Bid", BidSchema)
 
+// Create new Bid
 export const createBid = (values: Record<string, any>) => new Bid(values).save().then((bid: any) => bid.toObject());
+// GET All Bids
+export const getBids = () => Bid.find();
+// GET Bid by id
+export const getBidById = (id: string) => Bid.findById(id);
+// DELETE Bid by id
+export const deleteBidById = (id: string) => Bid.findByIdAndDelete(id);
+
+
 
 export default Bid;
