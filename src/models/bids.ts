@@ -64,6 +64,10 @@ BidSchema.pre('validate', async function(next) {
       }
     }
     // Error code if user bid at a lower price from the latest bid.
+    if (bidPrice <= auction.openingPrice) {
+      return next(new Error(JSON.stringify({ code: 7, message: 'Your bid price is lower than the opening price.'})));
+    }
+    // Error code if user bid at a lower price from the latest bid.
     if (bidPrice < auction.priceIncrement) {
       return next(new Error(JSON.stringify({ code: 3, message: 'Your bid price is lower than the latest bid price.'})));
     }
